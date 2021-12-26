@@ -1,0 +1,72 @@
+{% extends "base.j2" %}
+
+{% block title %}{{ config.TITRE }}{% endblock %}
+
+{#  
+Je viens d'apprendre que le rendu d'une page est meilleur si on précise le width et le height de chaque image
+Donc je le fait mais pas en dynamique
+---> après test, ce n'est pas très probant
+#}
+
+{% block content %}
+<div id="imgLeft" class="imgResize">
+    <img src="{{ url_for('static', filename='img/death-bass.jpg') }}" width="250" height="602" >
+</div>
+<div id="centerGrid">
+    <div id="imgTop">
+        <img src="{{ url_for('static', filename='img/death-guitar.png') }}" width="500" height="280">
+    </div>
+    
+    {% if session.idDownload is not defined %}
+    <div id="content">
+        <form>
+            <div>
+                <label for="url">URL youtube à récupérer </label>
+                <input type="text" id="url" name="url" required>
+            </div>
+            <input type="submit" value="Récupérer" class="button">
+        </form>
+    </div>
+    {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    
+    {% else %}
+    
+    <div id="labelNomFichier">
+    {{g.nomFichier}}
+    </div>
+    <div id="eta">
+    Moyenne du temps restant de récupération: {{g.download.lastETA}}
+    <a href="{{ url_for('homepage') }}"><button class="button">Mettre à jour la moyenne</button></a>
+    </div>
+    <div id="cancel">
+    <a href="{{ url_for('homepage',cancel=1) }}"><button class="button" id="cancelButton">Annuler la récupération</button></a>
+    </div>
+    {%endif%}
+
+    {%if g.urls!=None%}
+    <div id="divDownloads">
+    <table id="tableDownloads">
+         <thead>
+            <tr>
+                <th colspan="2">Les Vidéos</th> {# colspan si jamais il y a plus d'une colonne #}
+            </tr>
+            </thead>
+        <tbody>
+        {%-for url in g.urls%}
+            <tr>
+                <td>
+                    <a href="{{url.url}}">{{url.nom}}</a>
+                </td>
+            </tr>
+        {%-endfor-%}
+        </tbody>
+    </table>
+    </div>
+    {%endif%}
+</div>
+<div id="imgRight" class="imgResize">
+    <img src="{{ url_for('static', filename='img/death-bass.jpg') }}" width="250" height="602">
+</div>
+{% endblock %}

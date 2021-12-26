@@ -1,0 +1,18 @@
+version: "2.2" # 3.3 marche aussi sous apt ubuntu20.04/docker 
+
+services:
+  manu-dede: 
+    image: flask:manu-dede
+    build: .
+    restart: always
+    ports:
+      - 80:5000
+   
+    # la lecture de vidéo plante après quelques secondes dans le mode bridge et host (???) 
+    # mais pas avec docker run mode host (???)
+    #network_mode: host
+   
+    # pour faire marcher les print de l'appli python (mis dans le Dockerfile)
+    # environment:
+    #   - PYTHONUNBUFFERED=1
+#    privileged: true

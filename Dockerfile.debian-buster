@@ -1,0 +1,48 @@
+# -> image: flask:dede-manu
+FROM python:3.8-buster
+
+RUN \
+  apt update && \
+  apt install -y curl ffmpeg && \
+  curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && \
+  chmod a+rx /usr/local/bin/yt-dlp
+  
+  # curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl && \
+  # chmod a+rx /usr/local/bin/youtube-dl
+
+# Si la variable d'environnement REDIS est positionné avec comme valeur ADDRESS:PORT, 
+# alors ce serveur est utilsé pour les sessions
+# Rappel: le port clasique de Redis est: 6379
+
+EXPOSE 5000
+ENV \
+  FLASK_APP=manu_dede
+
+WORKDIR /app
+
+# la variable d'environnemt SECRET_KEY injecté de manière "sécurisé" (jusqu'à preuve du contraire)
+# si l'image est sur Docker Hub, tout le monde voit la clef dans l'image
+# Donc pour une prod, il faut toujours contruire soit même cette image
+RUN \
+echo "#!/bin/sh" > run.sh && \
+echo export SECRET_KEY=$(python -c "import string,random; print(''.join(random.choice(string.ascii_letters+string.digits+'-_:./+%£') for i in range(32)))") >>run.sh && \
+echo "exec flask run -h 0.0.0.0" >>run.sh && \
+chmod +x run.sh
+
+CMD ["/app/run.sh"]
+
+RUN \
+  useradd  flask -u 55555 -m && \
+  chown -R flask.flask /app
+
+USER flask
+ENV PATH=/home/flask/.local/bin:$PATH
+
+# le moteur flask
+COPY --chown=flask:flask README.md setup.py /app/
+RUN pip install .
+
+# le code source
+COPY --chown=flask:flask . /app/
+
+

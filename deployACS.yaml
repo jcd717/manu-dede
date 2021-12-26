@@ -1,0 +1,36 @@
+# il faut que le resourceGroup existe et les commandes sont:
+# az group create --name acs --location eastus
+# az container create --resource-group acs --file deployACS.yaml
+# les logs en CLI
+# az container logs --resource-group acs --name manu-dede
+# exec
+# az container exec --resource-group acs --name manu-dede --exec-command ash
+
+tags: {}
+type: Microsoft.ContainerInstance/containerGroups
+location: eastus
+name: manu-dede
+properties:
+  containers:
+  - name: manu-dede
+    properties:
+      # environmentVariables:
+      # - name: PYTHONUNBUFFERED # mis dans le Dockerfile
+      #   value: '1'
+      image: jcd717/manu-dede
+      ports:
+      - port: 80
+        protocol: TCP
+      resources:
+        requests:
+          cpu: 1.0
+          memoryInGB: 0.5
+  initContainers: []
+  ipAddress:
+    dnsNameLabel: manu-dede
+    ports:
+    - port: 80
+      protocol: TCP
+    type: Public
+  osType: Linux
+  restartPolicy: Always

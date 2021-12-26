@@ -1,0 +1,25 @@
+
+.vscode/
+.DS_Store
+
+flask_session/
+instance/
+manu_dede/static/downloads/
+PHPsaveDBaseTXT/*.txt*
+
+
+# Modèle
+venv/
+
+*.pyc
+__pycache__/
+
+
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+dist/
+build/
+*.egg-info/

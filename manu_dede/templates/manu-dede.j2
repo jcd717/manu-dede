@@ -1,0 +1,57 @@
+{% extends "base.j2" %}
+
+{% block title %}{{ config.TITRE }}{% endblock %}
+
+{% block content %}
+<div id="imgLeft" class="imgResize">
+    <img src="{{ url_for('static', filename='img/death-bass.jpg') }}" >
+</div>
+<div id="centerGrid">
+    <div id="imgTop">
+        <img src="{{ url_for('static', filename='img/death-guitar.png') }}">
+    </div> 
+
+    <div id="content">
+        <form>
+            <div>
+                <label for="url">URL youtube à récupérer </label>
+                <input type="text" id="url" name="url" required>
+            </div>
+            <input type="submit" value="Récupérer" class="button">
+        </form>
+    </div>
+
+    {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+
+    {%if g.urls!=None%}
+    <div id="divDownloads">
+    <table id="tableDownloads">
+         <thead>
+            <tr>
+                <th colspan="2">Les Vidéos</th> {# colspan si jamais il y a plus d'une colonne #}
+            </tr>
+        </thead>
+        <tbody>
+        {%-for url in g.urls%}
+            <tr>
+                <td>
+                    <a href="{{url.url}}">{{url.nom}}</a>
+                </td>
+                <td>
+                {#<a href="{{ url_for('manu_dede.delete',nom=url.nom) }}"><button class="deleteButton">Supprimer</button></a> #}
+                <a href="{{ url_for('manu_dede.delete',nom=url.nom) }}"><img class="deleteImg" title="Supprimer" alt="Supprimer" src="{{ url_for('static', filename='img/delete.png') }}"></a>
+                </td>
+            </tr>
+        {%-endfor-%}
+        </tbody>
+    </table>
+    </div>
+    {%endif%}
+
+</div>
+<div id="imgRight" class="imgResize">
+    <img src="{{ url_for('static', filename='img/death-bass.jpg') }}">
+</div>
+{% endblock %}

@@ -1,0 +1,162 @@
+:root {
+    --transition-duration-guitar-top: 250ms;
+}
+
+
+body {
+    font-family: Tahoma, Arial, Helvetica, sans-serif ;
+    background-color: whitesmoke;
+}
+
+header  {
+    display: flex;
+    justify-content: center;
+}
+
+nav {
+    display: grid;
+    grid-template-areas: "l cg r";
+    text-align: center;
+    grid-template-columns: max-content auto max-content;
+}
+
+#imgLeft {
+    grid-area: l;
+}
+
+#imgRight {
+    grid-area: r;
+}
+
+#centerGrid {
+    grid-area: cg;
+}
+
+#content {
+    /* grid-area: c; */
+    /* display: flex; */
+    margin-top: 8px;
+    margin-left: 1rem;
+    margin-right: 2rem;
+}
+
+@media (max-width:900px) {
+    div.imgResize {
+      display: none;
+    }
+  } 
+
+.imgResize img {
+    height: auto;
+    width: 250px;
+}
+
+input[type=text] {
+    padding: 5px;
+    font-size: calc(0.5rem + 0.9vw);
+    width: 100%;
+    margin-top: 12px;
+    border: solid darkviolet 3px;
+    border-radius: 10px;
+    background-color: inherit;
+}
+
+input[type=submit] {
+    margin-top: 5px;
+
+}
+
+#labelNomFichier, form label {
+    border: solid;
+    padding: 5px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-style: italic;
+    background-color: lightgrey;
+}
+
+.button {
+	border: 0;
+	line-height: 2.5;
+	padding: 0 20px;
+	font-size: 1rem;
+	text-align: center;
+	color: #fff;
+	text-shadow: 1px 1px 1px #000;
+	border-radius: 10px;
+	background-color: green;
+	background-image: linear-gradient(to top left, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2) 30%, rgba(0, 0, 0, 0));
+	box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6), inset -2px -2px 3px rgba(0, 0, 0, .6);
+    cursor: pointer;
+}
+
+.deleteImg {
+    height: auto;
+    width: 18px;
+    margin-top: 7px;
+    margin-left: 2px;
+}
+
+/* .deleteButton {
+	border: 0;
+	line-height: 2;
+	font-size: 0.6rem;
+	text-align: center;
+	color: #fff;
+	text-shadow: 1px 1px 1px #000;
+	border-radius: 10px;
+	background-color: red;
+	background-image: linear-gradient(to top left, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2) 30%, rgba(0, 0, 0, 0));
+	box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6), inset -2px -2px 3px rgba(0, 0, 0, .6);
+    cursor: pointer;
+} */
+
+/* #cancelButton {
+    background-color: red;
+}
+#cancel {
+    margin-top: 15px;
+}
+
+#eta, #divDownloads {
+    padding-top: 10px;
+} */
+
+#divDownloads {
+    padding-top: 10px;
+}
+
+#tableDownloads {
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid;
+    border-radius: 10px;
+    padding: 5px
+}
+#tableDownloads td {
+    padding: 0;
+}
+
+#tableDownloads thead {
+    background-color: black;
+    color: wheat;
+}
+
+.flash {
+    color: red;
+    border: 5px solid;
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 10px;
+    font-size: 1.5rem;
+}
+
+/* la guitare prend un effet miroir avec la souris dessus */
+#imgTop {
+    transition-duration: var(--transition-duration-guitar-top)
+}
+#imgTop:hover {
+    transform: scale(-1, 1);
+    transition-duration: var(--transition-duration-guitar-top)
+}
+
