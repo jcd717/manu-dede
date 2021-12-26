@@ -29,6 +29,14 @@ def index():
     current_app.logger.debug(f'{request.remote_addr} - {request.url} - {request.user_agent}')
     url=request.args.get('url')
     if url != None and session.get('idDownload')==None:
+        csrf=request.args.get('csrf_token')
+        from flask_wtf.csrf import validate_csrf,CSRFError
+        #from wtforms import ValidationError
+        try:
+            validate_csrf(csrf)
+        except:
+            current_app.logger.error(f'{request.remote_addr} - Attaque CSRF !')
+            return redirect(request.path)
         error,fileName=telecharger(url) # remplit session['idDownload'] et la supprime à la fin
         if error!=None:
             # afficher le flash error

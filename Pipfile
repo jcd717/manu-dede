@@ -18,6 +18,7 @@ rope = "*"
 flask = "*"
 Flask-Session = "*"
 requests = "*"
+flask_wtf = "*"
 # redis = "*"
 
 

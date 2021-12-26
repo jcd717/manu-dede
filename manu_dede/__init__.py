@@ -2,6 +2,8 @@ import os,logging
 
 from flask import Flask, request, send_from_directory, url_for
 
+from flask_wtf.csrf import CSRFProtect
+
 from flask_session import Session
 from werkzeug.utils import redirect
 
@@ -136,6 +138,9 @@ def create_app(test_config=None):
     app.urlSaveDownloads=os.environ.get('URL_SAVE_DOWNLOADS','https://granddub.fr/manu-dede-save-downloads')
     app.fileSaveDownloads=os.environ.get('FILE_SAVE_DOWNLOADS','downloads.txt')
 
+    # CSRF
+    csrf = CSRFProtect(app)
+    app.config['WTF_CSRF_TIME_LIMIT']=None # 3600 par défaut, avec None => le temps de la session
 
     return app
 
