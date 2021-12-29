@@ -130,7 +130,7 @@ def create_app(test_config=None):
 
 
     # CLI init-db et autres
-    app.DB_FILE=app.instance_path+'/downloads.sqlite'
+    app.DB_FILE=app.instance_path+'/downloads.sqlite3'
     from .db import db
     db.init_app(app)
 
