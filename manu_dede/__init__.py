@@ -128,19 +128,30 @@ def create_app(test_config=None):
         app.logger.error(f'{e.code} - {request.remote_addr} - {request.url} - {request.user_agent}')
         return e.get_response()
 
-
-    # CLI init-db et autres
-    app.DB_FILE=app.instance_path+'/downloads.sqlite3'
-    from .db import db
-    db.init_app(app)
-
-    # Variables d'environnement pour la base
-    app.urlSaveDownloads=os.environ.get('URL_SAVE_DOWNLOADS','https://granddub.fr/manu-dede-save-downloads')
-    app.fileSaveDownloads=os.environ.get('FILE_SAVE_DOWNLOADS','downloads.txt')
-
     # CSRF
     csrf = CSRFProtect(app)
     app.config['WTF_CSRF_TIME_LIMIT']=None # 3600 par défaut, avec None => le temps de la session
 
-    return app
+    ################
+    # scanner instance/downloads et synchroniser avec manu-dede/static/downloads
+    # cad: les fichiers dans instance sont les liens de manu-dede ni plus ni moins
+    # pourquoi :
+    #   en mode docker, je vais externaliser instance/downloads mais pas manu-dede/static/downloads
+    #   donc si le container est détruit, il faut recréer le contenu de manu-dede/static/downloads
+    ################
+    src=app.downloadsPath
+    dst=app.staticDownloadPath
+    videoFiles=os.listdir(src)
+    # vider dst
+    for f in os.listdir(dst):
+        os.unlink(os.path.join(dst,f))
+    # créer TOUS les liens symboliques
+    for f in videoFiles:
+        os.symlink( os.path.join(src,f) , os.path.join(dst,f) )
 
+    # pour avoir X-Forwarded-For dans stdout (à tester)
+    # from werkzeug.middleware.proxy_fix import ProxyFix
+    # app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+
+
+    return app

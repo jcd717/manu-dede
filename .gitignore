@@ -7,6 +7,9 @@ instance/
 manu_dede/static/downloads/
 PHPsaveDBaseTXT/*.txt*
 
+Pipefile.lock
+secret.env
+manu-dede_sans-bdd.t*
 
 # Modèle
 venv/

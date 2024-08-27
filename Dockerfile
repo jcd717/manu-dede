@@ -1,5 +1,5 @@
 # -> image: flask:dede-manu
-FROM python:3.8.12-alpine3.14
+FROM python:3.10-alpine3.20
 
 WORKDIR /app
 
@@ -16,27 +16,34 @@ ENV \
   PORT=${port} \
   PATH=/home/flask/.local/bin:$PATH \
   PYTHONUNBUFFERED=1 \
-  TZ="Europe/Paris"
+  TZ="Europe/Paris" \
+  SECRET_KEY="changeme"
 
 RUN  \
   apk update && \
-  apk add ffmpeg tzdata sqlite && \
+  apk add ffmpeg tzdata && \
   rm -fR /var/cache/apk/* && \
   \
   adduser -D flask -u 55555 && \
   chown -R flask.flask /app
 
 # le moteur flask
+# requirements.txt doit être mis à jour via setup.make-requirements.sh
 COPY --chown=flask:flask README.md setup.py requirements.txt /app/
-RUN pip install .
+RUN \
+  pip install --upgrade pip && \
+  pip install . && \
+  pip install yt-dlp && \
+  python3 -m pip install -U https://github.com/coletdjnz/yt-dlp-youtube-oauth2/archive/refs/heads/master.zip
 
 EXPOSE ${port}
-CMD ["/app/run-init.sh"]
+CMD flask run -h 0.0.0.0 -p $PORT
 
 # le code source
 COPY --chown=flask:flask . /app/
 
-ADD https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp /usr/local/bin/yt-dlp
-RUN chmod a+rx /usr/local/bin/yt-dlp
+# ADD https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp /usr/local/bin/yt-dlp
+# RUN chmod a+rx /usr/local/bin/yt-dlp
 
 USER flask
+RUN mkdir instance

@@ -3,16 +3,6 @@ name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
 
-[dev-packages]
-# pour VSC
-autopep8 = "*"
-pylint = "*"
-# pour les tests
-coverage = "*"
-pytest = "*"
-flask-debugtoolbar = "*"
-# pour le refactoring dans VSC
-rope = "*"
 
 [packages]
 flask = "*"
@@ -20,7 +10,3 @@ Flask-Session = "*"
 requests = "*"
 flask_wtf = "*"
 # redis = "*"
-
-
-[requires]
-python_version = "3.8"

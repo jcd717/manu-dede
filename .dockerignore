@@ -7,6 +7,7 @@ tests
 versionAsyncQuiMarchePas
 .git*
 .docker*
+.*
 
 
 .env
@@ -14,7 +15,14 @@ versionAsyncQuiMarchePas
 .DS_Store
 
 flask_session/
-instance/
+instance/downloads/*
+manu_dede/static/downloads/*
+make-*
+secret.env
+manu-dede_sans-bdd.t*
+# l'image en fichier archive: 
+# docker save manu-dede:sans-bdd | xz -9 - > manu-dede_sans-bdd.txz
+
 *.wsgi
 manu_dede/static/downloads/
 PHPsaveDBasTXT/*.txt

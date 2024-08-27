@@ -1,12 +1,17 @@
-version: "2.2" # 3.3 marche aussi sous apt ubuntu20.04/docker 
+# version: "2.2" # 3.3 marche aussi sous apt ubuntu20.04/docker 
 
 services:
   manu-dede: 
-    image: flask:manu-dede
+    image: manu-dede:sans-bdd
     build: .
     restart: always
     ports:
-      - 80:5000
+      - 5000:5000
+    env_file: 
+      - secret.env # doit contenir une définition de la variable d'envrionnement SECRET_KEY à générer avec make-secret-env.sh
+    volumes:
+      # mettre les droits o=rwx sur ./instance/downloads
+      - ./instance/downloads:/app/instance/downloads
    
     # la lecture de vidéo plante après quelques secondes dans le mode bridge et host (???) 
     # mais pas avec docker run mode host (???)

@@ -15,10 +15,12 @@
         <form>
             <div>
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                <label for="url">URL youtube à récupérer </label>
-                <input type="text" id="url" name="url" required>
+                <label for="url">URL youtube (ou autre) à récupérer </label>
+                <input type="url" id="url" name="url" required
+                    onKeyUp="if(event.key==='Enter'){ document.getElementById('submit').click(); event.preventDefault(); }"
+                >
             </div>
-            <input type="submit" value="Récupérer" class="button">
+            <input id="submit" type="submit" value="Récupérer" class="button">
         </form>
     </div>
 

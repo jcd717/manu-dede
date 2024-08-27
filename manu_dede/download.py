@@ -70,8 +70,8 @@ def telecharger(url,gererSession=True):
                 if deja!=None:
                     error=f"Il semble que l'URL \"{download.urlEnCours}\" pour le fichier \"{deja}\" soit déjà téléchargée"
                     break
-            else:
-                error="Il y a un problème dans le lien symbolique"
+                else:
+                    error="Il y a un problème dans le lien symbolique"
         else:
             print(f'[{datetime.now().strftime("%d/%m/%Y %H:%M:%S")}] [RECU]: destination={download.destination}')
             src=download.destination
@@ -109,5 +109,3 @@ def getAlready(line):
 def getRegex(regex,line):
     dest=re.match(regex,line)
     return None if dest==None else dest.groups()[0]
-
-

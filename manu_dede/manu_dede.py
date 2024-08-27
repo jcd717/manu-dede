@@ -3,7 +3,6 @@ from flask import g,render_template, Blueprint, request, session, flash, redirec
 import os
 
 from .download import telecharger
-from .db.db import insertDB,deleteDB
 
 
 bp = Blueprint('manu_dede', __name__)
@@ -20,7 +19,6 @@ def delete(nom):
         os.remove(file)
         file=current_app.downloadsPath+'/'+nom
         os.remove(file)
-        deleteDB(nom)
     return redirect(url_for('homepage'))
 
 
@@ -37,14 +35,12 @@ def index():
         except:
             current_app.logger.error(f'{request.remote_addr} - Attaque CSRF !')
             return redirect(request.path)
-        error,fileName=telecharger(url) # remplit session['idDownload'] et la supprime à la fin
+        error,fileName=telecharger(url) # rempli session['idDownload'] et la supprime à la fin
         if error!=None:
             # afficher le flash error
             flash(error)
             if session.get('idDownload')!=None:
                 del session['idDownload']
-        else:
-            insertDB(url,fileName)
         return redirect(request.path) # pour supprimer le paramètre dans l'URL
     elif session.get('idDownload')!=None:
         flash(f"PATIENCE, il y a une récupération en cours !!! -> {current_app.downloads[session['idDownload']].urlEnCours}")
@@ -85,5 +81,3 @@ def getListFiles():
         res.append(f)
     return res
     
-
-
