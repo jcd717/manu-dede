@@ -125,7 +125,7 @@ def create_app(test_config=None):
     from werkzeug.exceptions import HTTPException
     @app.errorhandler(HTTPException)
     def handle_exception(e):
-        app.logger.error(f'{e.code} - {request.remote_addr} - {request.url} - {request.user_agent}')
+        app.logger.error(f'{e.code} - {request.headers.get("X-Forwarded-For",request.remote_addr)} - {request.url} - {request.user_agent}')
         return e.get_response()
 
     # CSRF

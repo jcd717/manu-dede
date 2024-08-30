@@ -7,6 +7,6 @@ verify_ssl = true
 [packages]
 flask = "*"
 Flask-Session = "*"
-requests = "*"
+#requests = "*"
 flask_wtf = "*"
 # redis = "*"

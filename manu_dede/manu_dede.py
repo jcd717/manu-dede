@@ -12,9 +12,9 @@ bp = Blueprint('manu_dede', __name__)
 def delete(nom):
     files=getListFiles()
     if files==None or nom not in files:
-        current_app.logger.error(f'{request.remote_addr} - ECHEC SUPPRESSION - {nom} - {request.user_agent}')
+        current_app.logger.error(f'{request.headers.get("X-Forwarded-For",request.remote_addr)} - ECHEC SUPPRESSION - {nom} - {request.user_agent}')
     else:
-        current_app.logger.info(f'{request.remote_addr} - SUPPRESSION - {nom} - {request.user_agent}')
+        current_app.logger.info(f'{request.headers.get("X-Forwarded-For",request.remote_addr)} - SUPPRESSION - {nom} - {request.user_agent}')
         file=current_app.staticDownloadPath+'/'+nom
         os.remove(file)
         file=current_app.downloadsPath+'/'+nom
@@ -24,7 +24,7 @@ def delete(nom):
 
 @bp.route('/',methods = ['GET'])
 def index():
-    current_app.logger.debug(f'{request.remote_addr} - {request.url} - {request.user_agent}')
+    current_app.logger.info(f'{request.headers.get("X-Forwarded-For",request.remote_addr)} - {request.url} - {request.user_agent}')
     url=request.args.get('url')
     if url != None and session.get('idDownload')==None:
         csrf=request.args.get('csrf_token')
